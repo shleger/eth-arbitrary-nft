@@ -2,10 +2,10 @@ require("@nomicfoundation/hardhat-toolbox");
 require ("dotenv/config");
 require("@nomiclabs/hardhat-etherscan");
 
-const ALCHEMY_API_KEY = "" //process.env.ALCHEMY_API_KEY || "";
-const INFURA_API_KEY  = "" //process.env.ALCHEMY_API_KEY || "";
-const ETHERSCAN_API_KEY  = "" //process.env.ETHERSCAN_API_KEY || "";
-const SEPOLIA_MY_METAMASK_PRIVATE_KEY = "" // process.env.SEPOLIA_MY_METAMASK_PRIVATE_KEY || "";
+const ALCHEMY_API_KEY = "00000000000000000000000000000000" //process.env.ALCHEMY_API_KEY || "";
+const INFURA_API_KEY  = "00000000000000000000000000000000" //process.env.ALCHEMY_API_KEY || "";
+const ETHERSCAN_API_KEY  = "00000000000000000000000000000000" //process.env.ETHERSCAN_API_KEY || "";
+const SEPOLIA_MY_METAMASK_PRIVATE_KEY = "0000000000000000000000000000000000000000000000000000000000000000" // process.env.SEPOLIA_MY_METAMASK_PRIVATE_KEY || "";
 
 module.exports = {
   solidity: "0.8.18",
