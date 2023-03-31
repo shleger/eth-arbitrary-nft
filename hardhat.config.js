@@ -5,7 +5,6 @@ require("@nomiclabs/hardhat-etherscan");
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
 const INFURA_API_KEY  = process.env.ALCHEMY_API_KEY;
 const ETHERSCAN_API_KEY  = process.env.ETHERSCAN_API_KEY;
-ETHERSCAN_API_KEY
 const SEPOLIA_MY_METAMASK_PRIVATE_KEY = process.env.SEPOLIA_MY_METAMASK_PRIVATE_KEY;
 
 module.exports = {

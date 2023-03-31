@@ -4,6 +4,10 @@
   "description": "NFT contract (ERC-721) that support:  arbitrary type/number of attributes, royalty payment to a NFT original creator",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test"
+  },
   "devDependencies": {
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
