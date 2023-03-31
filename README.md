@@ -22,6 +22,13 @@ npx hardhat verify --constructor-args scripts/arguments.js --network sepolia CON
 https://sepolia.etherscan.io/address/0xC6849bBf7553Fee139C09D1b32D964851f81B690#readContract
 
 
+## CI
+
+[![me](https://circleci.com/gh/shleger/eth-arbitrary-nft/eth-arbitrary-nft.svg?style=shield)](https://app.circleci.com/pipelines/github/shleger/eth-arbitrary-nft)
+
+
+
+
 
 
 
