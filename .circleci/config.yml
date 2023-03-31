@@ -8,5 +8,5 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm compile
-      - run: npm test
+      - run: npm run compile
+      - run: npm run test
