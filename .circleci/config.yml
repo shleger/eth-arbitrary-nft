@@ -39,7 +39,7 @@ jobs:
           at: .
       - run:
           name: Unit tests
-          command: npx hardhattest
+          command: npx hardhat test
 
 workflows:
   version: 2
