@@ -7,10 +7,6 @@ const INFURA_API_KEY  = "" //process.env.ALCHEMY_API_KEY || "";
 const ETHERSCAN_API_KEY  = "" //process.env.ETHERSCAN_API_KEY || "";
 const SEPOLIA_MY_METAMASK_PRIVATE_KEY = "" // process.env.SEPOLIA_MY_METAMASK_PRIVATE_KEY || "";
 
-
-ETHERSCAN_API_KEY
-const SEPOLIA_MY_METAMASK_PRIVATE_KEY = process.env.SEPOLIA_MY_METAMASK_PRIVATE_KEY;
-
 module.exports = {
   solidity: "0.8.18",
   defaultNetwork: "hardhat",
