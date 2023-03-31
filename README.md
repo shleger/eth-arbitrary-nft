@@ -1,4 +1,7 @@
-# Arbitrary NFT implemetation with usage of openzeppelin library 
+[![CircleCI](https://circleci.com/gh/shleger/eth-arbitrary-nft/tree/master.svg?style=svg)](https://app.circleci.com/pipelines/github/shleger/eth-arbitrary-nft)
+
+
+## Arbitrary NFT implemetation with usage of openzeppelin library 
 
 https://docs.openzeppelin.com/contracts/4.x/api/token/erc721 
 
@@ -21,11 +24,6 @@ npx hardhat verify --constructor-args scripts/arguments.js --network sepolia CON
 
 https://sepolia.etherscan.io/address/0xC6849bBf7553Fee139C09D1b32D964851f81B690#readContract
 
-
-## CI
-
-
-[![CircleCI](https://circleci.com/gh/shleger/eth-arbitrary-nft/tree/master.svg?style=svg)](https://app.circleci.com/pipelines/github/shleger/eth-arbitrary-nft)
 
 
 
