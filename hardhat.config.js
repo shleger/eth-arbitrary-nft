@@ -1,5 +1,7 @@
-require("@nomicfoundation/hardhat-toolbox");
 require ("dotenv/config");
+require('dotenv-defaults').config()
+
+require("@nomicfoundation/hardhat-toolbox");
 require("@nomiclabs/hardhat-etherscan");
 
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
