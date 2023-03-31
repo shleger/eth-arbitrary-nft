@@ -5,6 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "compile": "npx hardhat compile",
     "test": "npx hardhat test"
   },
   "devDependencies": {
