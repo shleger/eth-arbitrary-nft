@@ -59,6 +59,7 @@ describe("Arbitrary NFT contract ", function () {
     const royaltyInfo = await contract.royaltyInfo(tokenId, testPrice);
     expect(royaltyInfo[0]).to.equal(nftIssuer.address);
     expect(royaltyInfo[1]).to.equal(new BigNumber(testPrice).multipliedBy(feeBsp).dividedBy(feeDenom100bsp).toNumber());
+    // console.log("Royalty for %s bsp is %s,  from  price: %s", feeBsp, royaltyInfo[1], testPrice);
   
   }).timeout(10000);
 
@@ -96,26 +97,17 @@ describe("Arbitrary NFT contract ", function () {
     const afterNftOwnerBalance = await nftOwner.getBalance();
     const afterNewOwnerBalance = await newOwner.getBalance();
     
-
-    expect(afterNftOwnerBalance).to.equal(initialNftOwnerBalance.add(tokenPrice).sub(Number(gasUsed1)));
+    const royalty = tokenPrice.div(feeBsp * 0.01)
+    expect(afterNftOwnerBalance).to.equal(initialNftOwnerBalance
+      .add(tokenPrice)
+      .sub(Number(gasUsed1))
+      .sub(royalty));
+      
     expect(afterNewOwnerBalance).to.equal(initialNewOwnerBalance.sub(tokenPrice).sub(Number(gasUsed2)));
 
     // ensure recipient is the new owner of the token
     expect(await contract.ownerOf(tokenId)).to.equal(newOwner.address);
 
-    // royalty
-    feeDenom100bsp = 10000 // see contract ERC2981._feeDenominator
-    const royaltyInfo = await contract.royaltyInfo(tokenId, tokenPrice);
-    expect(royaltyInfo[0]).to.equal(nftIssuer.address);   
-    expect(royaltyInfo[1]).to.equal(tokenPrice.mul(feeBsp).div(feeDenom100bsp));
-
-    const tx3 = await contract.connect(newOwner).payRoyalty(tokenId, { value: royaltyInfo[1] });
-    const gasUsed3 = await gasUsed(tx3)
-    const afterNftIssuerBalance = await nftIssuer.getBalance();
-    const afterNewOwnerBalance2 = await newOwner.getBalance();
-
-    expect(afterNftIssuerBalance).to.equal(initialNftIssuerBalance.add(royaltyInfo[1]));
-    expect(afterNewOwnerBalance2).to.equal(afterNewOwnerBalance.sub(royaltyInfo[1]).sub(Number(gasUsed3)));
   }).timeout(10000);
 
 

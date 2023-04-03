@@ -50,13 +50,13 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
      * @param feeRecipient The `feeNumerator` is used in conjunction with the `feeRecipient` parameter, 
      * which is the Ethereum address of the account that will receive the fee charged by the contract owner.
      * 
-     * @param feeNumerator The `feeNumerator` is an integer value that represents 
+     * @param feeBsp The `feeNumerator` is an integer value that represents 
      * the percentage of the total transfer value that the contract owner will charge as 
      * a fee. For example, if the `feeNumerator` is set to 1000 and the value of the token being 
      * transferred is 1 ETH, then the fee charged by the contract owner will be 0.1 ETH (10% of 1 ETH).
      * @param price price of the NFT
      */
-    function mintWithRoyalty(address nftOwner, address feeRecipient, uint96 feeNumerator, uint256 price)
+    function mintWithRoyalty(address nftOwner, address feeRecipient, uint96 feeBsp, uint256 price)
         public onlyOwner returns (uint256) {
          tokenIdGen = _tokenIdCounter.current();  
         _tokenIdCounter.increment();
@@ -66,7 +66,7 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
         
         
         _safeMint(nftOwner, tokenIdGen);
-        _setTokenRoyalty(tokenIdGen, feeRecipient, feeNumerator);
+        _setTokenRoyalty(tokenIdGen, feeRecipient, feeBsp);
 
         tokenIdToPrice[tokenIdGen] = price;
         royaltyAcceptors[tokenIdGen] = feeRecipient;
@@ -75,13 +75,12 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
    }
 
 
-    function payRoyalty(uint256 tokenId) public payable{
-        // TODO this is how should be implemented royalty payment
-        // uint256 price = tokenIdToPrice[tokenId];
-        // (address addr, uint256 amount) = royaltyInfo(tokenId, price);
-        // payable(addr).transfer(amount); // why error on hardhat tests?
-        
-        payable(royaltyAcceptors[tokenId]).transfer(msg.value);
+    function payRoyalty(uint256 tokenId) public payable returns (uint256){
+        uint256 price = tokenIdToPrice[tokenId];
+        (address addr, uint256 royalty) = royaltyInfo(tokenId, price);
+        // console.log("Royalty info %s,   price: %s", royalty, price);
+        payable(addr).transfer(royalty); 
+        return royalty;
     }
 
     function getLastTokenId() public view returns (uint256){
@@ -100,11 +99,11 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
         address seller = ownerOf(_tokenId);
         transferFrom(seller, msg.sender, _tokenId);
 
-        // payRoyalty(_tokenId); //TODO transfer failed on hardhat 
-        // payable(seller).transfer(price); //TODO transfer failed on hardhat 
+        uint256 royalty = payRoyalty(_tokenId);        
+        // console.log("Royalty %s,  from price: %s", royalty, price);
+
+        payable(seller).transfer(price - royalty); 
         
-        //workaround
-        payable(seller).transfer(msg.value); //send the ETH to the seller
     }
 
 
