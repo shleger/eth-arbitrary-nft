@@ -10,6 +10,15 @@ async function gasUsed (tx){
 
 }
 
+async function getEmmitedValue (eventName, tx) {
+  const receipt = await tx.wait();
+  for (const event of receipt.events) {
+    // console.log(`Event ${event.event} with args ${event.args}`);
+    if (event.event == eventName) return event.args[1];    
+  }
+  throw new Error("Event: " + eventName + " not found!");
+}
+
 describe("Arbitrary NFT contract ", function () {
   async function deployFixture() {
     const ArbitraryNft = await ethers.getContractFactory("ArbitraryNft");
@@ -23,9 +32,14 @@ describe("Arbitrary NFT contract ", function () {
 
     const tokenPrice = ethers.utils.parseEther('0.005')
     const feeBsp = 1000 
-    await contract.mintWithRoyalty(nftOwner.address, nftIssuer.address, feeBsp ,tokenPrice);
-    const tokenId = await contract.getLastTokenId();
+    const tx = await contract.mintWithRoyalty(nftOwner.address, nftIssuer.address, feeBsp ,tokenPrice);
+    
+    const tokenId = getEmmitedValue("MintedNft", tx);
 
+
+
+  
+  
     return { ipfsBaseUri, ArbitraryNft, contract, 
              contractOwner, nftIssuer, nftOwner, newOwner, 
              tokenId, tokenPrice, feeBsp};
@@ -102,7 +116,7 @@ describe("Arbitrary NFT contract ", function () {
       .add(tokenPrice)
       .sub(Number(gasUsed1))
       .sub(royalty));
-      
+
     expect(afterNewOwnerBalance).to.equal(initialNewOwnerBalance.sub(tokenPrice).sub(Number(gasUsed2)));
 
     // ensure recipient is the new owner of the token

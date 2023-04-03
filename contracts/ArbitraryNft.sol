@@ -43,6 +43,8 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
             ipfsBaseURI = _baseURI;
     }
 
+    event MintedNft(address indexed _from, uint256 _tokenId);
+
     /**
      * Mint NFT to nftOwner
      * 
@@ -57,7 +59,7 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
      * @param price price of the NFT
      */
     function mintWithRoyalty(address nftOwner, address feeRecipient, uint96 feeBsp, uint256 price)
-        public onlyOwner returns (uint256) {
+        public onlyOwner  {
          tokenIdGen = _tokenIdCounter.current();  
         _tokenIdCounter.increment();
 
@@ -70,12 +72,14 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
 
         tokenIdToPrice[tokenIdGen] = price;
         royaltyAcceptors[tokenIdGen] = feeRecipient;
+
+        emit MintedNft (nftOwner, tokenIdGen);
+
         
-        return tokenIdGen;
    }
 
 
-    function payRoyalty(uint256 tokenId) public payable returns (uint256){
+    function payRoyalty(uint256 tokenId) internal returns (uint256){
         uint256 price = tokenIdToPrice[tokenId];
         (address addr, uint256 royalty) = royaltyInfo(tokenId, price);
         // console.log("Royalty info %s,   price: %s", royalty, price);
@@ -83,14 +87,9 @@ contract ArbitraryNft is ERC721 , ERC721Enumerable, ERC721URIStorage, ERC721Roya
         return royalty;
     }
 
-    function getLastTokenId() public view returns (uint256){
-        return tokenIdGen;
-    }
-
     function getTokenPrice(uint256 tokenId) public view returns (uint256){
         return tokenIdToPrice[tokenId];
     }
-
 
     
     function buy(uint256 _tokenId) public payable {
